@@ -6,9 +6,12 @@ from org.ingestion.utils.Utils import Utils
 
 
 class SolarKal(Executor):
+    spark = None
+
     def __init__(self):
         pass
-    def execute_ingestion(self):
+
+    def execute_ingestion(self, spark):
         description = self.fetch_description()
         print(description)
         clients = self.fetch_clients()
@@ -68,14 +71,8 @@ class SolarKal(Executor):
         returnres+=f"summary : {paragraphs[7]}\n\n"
         return returnres
     def save_details(self,description,clients,news):
-        from pyspark.sql import SparkSession
 
-        spark = SparkSession.builder \
-            .appName("MyApp") \
-            .master("local[*]") \
-            .getOrCreate()
-
-        df=spark.createDataFrame([[description],[clients],[news]])
+        df=self.spark.createDataFrame([[description],[clients],[news]])
         df.write\
           .format("com.crealytics.spark.excel")\
           .option("sheetName", "MyDataSheet")\

@@ -10,9 +10,10 @@ class IngestionPipeline:
     def execute(self):
         if self.company_id=="5875":
             company_obj=SolarKal()
-            company_obj.execute_ingestion()
+            company_obj.execute_ingestion(spark)
         elif self.company_id=="11917":
-            print("klj")
+            company_obj = H2scan()
+            company_obj.execute_ingestion(spark)
         elif self.company_id=="34005":
             print("klj")
         elif self.company_id=="65212":
