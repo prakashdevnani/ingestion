@@ -112,15 +112,7 @@ class H2scan(Executor):
         returnres += f"summary: {summary}\n\n"
 
         return returnres
-    def save_details(self,description,clients,news):
 
-        df=self.spark.createDataFrame([[description],[clients],[news]])
-        df.withColumn("updt_date",current_date())\
-        .withColumn("filename",lit("SolarKal"))\
-         .write\
-          .format("com.crealytics.spark.excel")\
-          .option("sheetName", "MyDataSheet")\
-          .option("useHeader", "true")\
-          .mode("overwrite")\
-          .partitionBy("updt_date","filename")\
-          .save("output")
+    def save_details(self, description, clients, news):
+
+        Utils.save_details(self.spark, description, clients, news)
